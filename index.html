@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미래의 나와 대화하기</title>
+  <style>
+    :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+
+  --font-family-base: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  --font-size-base: 15px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 28px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  --radius-base: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(167, 169, 169, 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-btn-primary-text: var(--color-slate-900);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.app-container {
+  max-width: 600px;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* Start Screen */
+.start-screen {
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-32);
+  text-align: center;
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+}
+
+.start-screen h1 {
+  font-size: 36px;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-24);
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+}
+
+.start-screen p {
+  font-size: 20px;
+  color: var(--color-text-secondary);
+  margin-bottom: 48px;
+  line-height: 1.8;
+}
+
+/* Selection Screen */
+.selection-screen {
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-32);
+  gap: 40px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.selection-screen h2 {
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+}
+
+.selection-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 100%;
+  max-width: 700px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+@media (max-width: 768px) {
+  .selection-buttons {
+    flex-direction: column;
+    max-width: 400px;
+  }
+}
+
+.scenario-card {
+  flex: 1;
+  min-width: 280px;
+  max-width: 340px;
+  padding: 32px 24px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.scenario-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.scenario-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.scenario-card:hover::before {
+  opacity: 1;
+}
+
+.scenario-card.positive {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.scenario-card.positive::before {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.scenario-card.negative {
+  background: linear-gradient(135deg, #868f96 0%, #596164 100%);
+  color: white;
+}
+
+.scenario-card.negative::before {
+  background: linear-gradient(135deg, #434343 0%, #000000 100%);
+}
+
+.scenario-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.scenario-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.scenario-card h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.scenario-card p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+/* Chat Screen */
+.chat-screen {
+  justify-content: space-between;
+}
+
+.chat-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.05) 0%, rgba(0, 242, 254, 0.05) 100%);
+  backdrop-filter: blur(10px);
+}
+
+.chat-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.3px;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-lg);
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+.message.bot .message-bubble {
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.15) 0%, rgba(0, 242, 254, 0.15) 100%);
+  color: var(--color-text);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.message.bot.positive .message-bubble {
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(16, 185, 129, 0.15) 100%);
+}
+
+.message.bot.negative .message-bubble {
+  background: linear-gradient(135deg, rgba(156, 163, 175, 0.2) 0%, rgba(107, 114, 128, 0.15) 100%);
+}
+
+.message.user .message-bubble {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 12px rgba(79, 172, 254, 0.3);
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-12) var(--space-16);
+  background-color: var(--color-bg-1);
+  border-radius: var(--radius-lg);
+  max-width: 70px;
+}
+
+.typing-indicator.positive {
+  background-color: var(--color-bg-3);
+}
+
+.typing-indicator.negative {
+  background-color: var(--color-bg-2);
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-text-secondary);
+  animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+.chat-input-container {
+  padding: var(--space-16) var(--space-20);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.chat-input-wrapper {
+  display: flex;
+  gap: var(--space-8);
+  align-items: flex-end;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 14px 18px;
+  border: 2px solid var(--color-border);
+  border-radius: 14px;
+  font-size: 15px;
+  font-family: var(--font-family-base);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  resize: none;
+  max-height: 120px;
+  overflow-y: auto;
+  transition: all 0.2s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #4facfe;
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+}
+
+.chat-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Buttons */
+.btn {
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: var(--font-family-base);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background: var(--color-background);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-send {
+  padding: 14px 24px;
+  min-width: 70px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  border-radius: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-send:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 172, 254, 0.4);
+}
+
+.btn-send:disabled {
+  opacity: 0.4;
+  transform: none;
+  box-shadow: none;
+}
+
+.completion-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-20);
+  background-color: var(--color-background);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .app-container {
+    max-width: 100%;
+  }
+  
+  .message-bubble {
+    max-width: 80%;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Start Screen -->
+    <div id="startScreen" class="screen active">
+      <div class="start-screen">
+        <h1>미래의 나와 대화하기</h1>
+        <p>2040년의 미래에서 온<br>당신 자신과 대화를 나눠보세요.</p>
+        <button class="btn btn-primary" onclick="showSelectionScreen()">시작하기</button>
+      </div>
+    </div>
+
+    <!-- Selection Screen -->
+    <div id="selectionScreen" class="screen">
+      <div class="selection-screen">
+        <h2>어떤 미래자아와<br>대화하시겠습니까?</h2>
+        <div class="selection-buttons">
+          <button class="scenario-card positive" onclick="startChat('positive')">
+            <div class="scenario-card-content">
+              <span class="scenario-icon">✨</span>
+              <h3>긍정 미래자아</h3>
+              <p>금연에 성공한 건강하고<br>행복한 나의 모습</p>
+            </div>
+          </button>
+          <button class="scenario-card negative" onclick="startChat('negative')">
+            <div class="scenario-card-content">
+              <span class="scenario-icon">💭</span>
+              <h3>부정 미래자아</h3>
+              <p>금연에 실패하여<br>후회하는 나의 모습</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div id="chatScreen" class="screen">
+      <div class="chat-screen">
+        <div class="chat-header">
+          <h2 id="chatTitle">미래자아</h2>
+        </div>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="completion-buttons" id="completionButtons" style="display: none;"></div>
+        <div class="chat-input-container" id="inputContainer">
+          <div class="chat-input-wrapper">
+            <textarea 
+              id="chatInput" 
+              class="chat-input" 
+              placeholder="메시지를 입력하세요..."
+              rows="1"
+              disabled
+            ></textarea>
+            <button id="sendButton" class="btn btn-send" onclick="sendMessage()" disabled>전송</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Scenario data
+    const scenarios = {
+      positive: {
+        title: "긍정 미래자아",
+        type: "positive",
+        messages: [
+          { type: "bot", text: "안녕, 2025년의 나! 오랜만이야.", waitForUser: false },
+          { type: "bot", text: "금연이 참 어렵지?", waitForUser: true },
+          { type: "bot", text: "그래도, 그때의 결심으로 나는 더 멋진 어른이 된 것 같아. 정말 건강해. 아이의 운동회에 갔는데 내가 1등을 했지. 모두 지금의 너 덕이야.", waitForUser: false },
+          { type: "bot", text: "내가 금연을 결심했던 게 벌써 15년 전이라는 게 믿기지 않아.", waitForUser: false },
+          { type: "bot", text: "그게 바로 지금의 너인데, 가장 힘이 됐던게 뭐야?", waitForUser: true },
+          { type: "bot", text: "맞아 바로 그거야!", waitForUser: false },
+          { type: "bot", text: "하지만 돌이켜보면, 결국 '내 건강이 제일 중요하다'는 마음이 가장 큰 원동력이었지. 힘들지만 앞으로 꾸준히 해줄거지?", waitForUser: true },
+          { type: "bot", text: "그렇게 한 걸음씩 나아가면 돼.", waitForUser: false },
+          { type: "bot", text: "매번 완벽할 필요는 없어. 하지만 멈추지 않는 게 중요해.", waitForUser: false },
+          { type: "bot", text: "다음에 또 만나자, 2025년의 나.", waitForUser: false },
+          { type: "bot", text: "금연의 길, 우리 함께 계속 가보자.", waitForUser: false }
+        ]
+      },
+      negative: {
+        title: "부정 미래자아",
+        type: "negative",
+        messages: [
+          { type: "bot", text: "안녕, 2025년의 나. 사실 이렇게 다시 만나게 될 줄은 몰랐어.", waitForUser: false },
+          { type: "bot", text: "요즘도 담배를 피우고 있지?", waitForUser: false },
+          { type: "bot", text: "사실 난, 그 선택을 멈추지 못해서 지금 많이 후회하고 있어.", waitForUser: false },
+          { type: "bot", text: "숨이 차고 병원 신세를 자주 지게 되더라.", waitForUser: false },
+          { type: "bot", text: "금연이 참 어렵지?", waitForUser: true },
+          { type: "bot", text: "맞아, 금연은 어렵지. 나도 수없이 미뤘어.", waitForUser: false },
+          { type: "bot", text: "하지만 결국 결심하지 못한 내가 이렇게 됐다는 걸 기억해줬으면 해.", waitForUser: false },
+          { type: "bot", text: "지금 네가 생각하는 금연의 가장 큰 걸림돌은 뭐야?", waitForUser: true },
+          { type: "bot", text: "그 부분을 지금 바꿀 수 있다면, 내 삶은 완전히 달라졌을 거야.", waitForUser: false },
+          { type: "bot", text: "네가 지금 내 말을 듣고 있다면 — 제발, 오늘부터는 시작해줘. 대답해줘", waitForUser: true },
+          { type: "bot", text: "고마워. 이렇게 들어줘서.", waitForUser: false },
+          { type: "bot", text: "지금의 작은 선택이, 앞으로의 모든 날들을 바꿀 거야.", waitForUser: false },
+          { type: "bot", text: "다시 만날 땐 꼭 건강한 모습으로 만나자.", waitForUser: false }
+        ]
+      }
+    };
+
+    // Application state
+    let currentScenario = null;
+    let currentMessageIndex = 0;
+    let userResponses = [];
+    let completedScenarios = [];
+    let isProcessing = false;
+
+    // DOM elements
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
+    const chatTitle = document.getElementById('chatTitle');
+    const inputContainer = document.getElementById('inputContainer');
+    const completionButtons = document.getElementById('completionButtons');
+
+    // Show selection screen
+    function showSelectionScreen() {
+      showScreen('selectionScreen');
+    }
+
+    // Switch screens
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    // Start chat with selected scenario
+    function startChat(scenarioType) {
+      currentScenario = scenarios[scenarioType];
+      currentMessageIndex = 0;
+      chatMessages.innerHTML = '';
+      completionButtons.style.display = 'none';
+      inputContainer.style.display = 'flex';
+      chatTitle.textContent = currentScenario.title;
+      showScreen('chatScreen');
+      
+      // Start conversation
+      processNextMessages();
+    }
+
+    // Process and display next messages
+    async function processNextMessages() {
+      if (isProcessing) return;
+      isProcessing = true;
+
+      while (currentMessageIndex < currentScenario.messages.length) {
+        const message = currentScenario.messages[currentMessageIndex];
+        
+        if (message.type === 'bot') {
+          await displayBotMessage(message.text);
+          currentMessageIndex++;
+          
+          if (message.waitForUser) {
+            // Enable input for user response
+            enableInput();
+            isProcessing = false;
+            return;
+          }
+          
+          // Small delay between bot messages
+          await delay(800);
+        }
+      }
+
+      // Conversation completed
+      isProcessing = false;
+      onConversationComplete();
+    }
+
+    // Display bot message with typing indicator
+    async function displayBotMessage(text) {
+      // Show typing indicator
+      const typingDiv = document.createElement('div');
+      typingDiv.className = `message bot ${currentScenario.type}`;
+      typingDiv.innerHTML = `<div class="typing-indicator ${currentScenario.type}"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+      chatMessages.appendChild(typingDiv);
+      scrollToBottom();
+      
+      // Wait for typing effect
+      await delay(1500);
+      
+      // Remove typing indicator
+      typingDiv.remove();
+      
+      // Show actual message
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message bot ${currentScenario.type}`;
+      messageDiv.innerHTML = `<div class="message-bubble">${text}</div>`;
+      chatMessages.appendChild(messageDiv);
+      scrollToBottom();
+    }
+
+    // Display user message
+    function displayUserMessage(text) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message user';
+      messageDiv.innerHTML = `<div class="message-bubble">${text}</div>`;
+      chatMessages.appendChild(messageDiv);
+      scrollToBottom();
+    }
+
+    // Enable input
+    function enableInput() {
+      chatInput.disabled = false;
+      chatInput.focus();
+      updateSendButton();
+    }
+
+    // Disable input
+    function disableInput() {
+      chatInput.disabled = true;
+      sendButton.disabled = true;
+    }
+
+    // Send message
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text || isProcessing) return;
+
+      // Save user response
+      const currentMessage = currentScenario.messages[currentMessageIndex - 1];
+      userResponses.push({
+        scenario: currentScenario.type,
+        scenarioTitle: currentScenario.title,
+        questionIndex: currentMessageIndex - 1,
+        question: currentMessage ? currentMessage.text : '',
+        response: text,
+        timestamp: new Date().toISOString()
+      });
+
+      // Display user message
+      displayUserMessage(text);
+      
+      // Clear input
+      chatInput.value = '';
+      disableInput();
+      
+      // Continue conversation
+      processNextMessages();
+    }
+
+    // Handle input changes
+    chatInput.addEventListener('input', function() {
+      updateSendButton();
+      autoResize(this);
+    });
+
+    // Handle Enter key
+    chatInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Update send button state
+    function updateSendButton() {
+      sendButton.disabled = !chatInput.value.trim() || chatInput.disabled;
+    }
+
+    // Auto resize textarea
+    function autoResize(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+    }
+
+    // Scroll to bottom
+    function scrollToBottom() {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Delay helper
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // On conversation complete
+    function onConversationComplete() {
+      disableInput();
+      completedScenarios.push(currentScenario.type);
+      
+      // Show completion buttons
+      inputContainer.style.display = 'none';
+      completionButtons.style.display = 'flex';
+      completionButtons.innerHTML = '';
+
+      // Check which scenario to offer next
+      const remainingScenario = completedScenarios.length === 1 
+        ? (completedScenarios[0] === 'positive' ? 'negative' : 'positive')
+        : null;
+
+      if (remainingScenario) {
+        const nextButton = document.createElement('button');
+        nextButton.className = 'btn btn-primary';
+        nextButton.textContent = `${scenarios[remainingScenario].title}와 대화하기`;
+        nextButton.onclick = () => startChat(remainingScenario);
+        completionButtons.appendChild(nextButton);
+      }
+
+      const restartButton = document.createElement('button');
+      restartButton.className = 'btn btn-secondary';
+      restartButton.textContent = '처음으로 돌아가기';
+      restartButton.onclick = resetApp;
+      completionButtons.appendChild(restartButton);
+
+      // Log responses to console for research purposes
+      console.log('=== 사용자 응답 데이터 ===');
+      console.log(JSON.stringify(userResponses, null, 2));
+      console.log('=========================');
+    }
+
+    // Reset app
+    function resetApp() {
+      currentScenario = null;
+      currentMessageIndex = 0;
+      completedScenarios = [];
+      isProcessing = false;
+      chatMessages.innerHTML = '';
+      chatInput.value = '';
+      showScreen('startScreen');
+      
+      // Final log of all responses
+      if (userResponses.length > 0) {
+        console.log('=== 전체 세션 응답 데이터 ===');
+        console.log(JSON.stringify(userResponses, null, 2));
+        console.log('============================');
+      }
+    }
+
+    // Prevent accidental navigation
+    window.addEventListener('beforeunload', function(e) {
+      if (userResponses.length > 0 && completedScenarios.length < 2) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+  </script>
+</body>
+</html>
